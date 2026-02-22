@@ -1,0 +1,7 @@
+{
+  "id": "product-engineering",
+  "name": "Product Engineering",
+  "description": "Full-cycle product development from ideation to deployment. A coordinated team of developers, designers, devops and QA engineers that ship quality software.",
+  "image": "./image.png",
+  "members": ["neo", "gilfoyle", "miss-grey", "mr-quance", "trinity"]
+}

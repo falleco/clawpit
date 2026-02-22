@@ -1,0 +1,7 @@
+{
+  "id": "email-outreach",
+  "name": "Email Outreach",
+  "description": "Run targeted email campaigns for sales, partnerships, or growth. Draper crafts sequences that convert while Scout builds quality prospect lists.",
+  "image": "./image.png",
+  "members": ["draper", "scout"]
+}

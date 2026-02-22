@@ -1,0 +1,7 @@
+{
+  "id": "community-manager",
+  "name": "Community Manager",
+  "description": "Build and nurture online communities across platforms. Morpheus welcomes and engages while Pixel creates content that sparks conversation.",
+  "image": "./image.png",
+  "members": ["morpheus", "pixel"]
+}

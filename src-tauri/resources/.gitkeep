@@ -1,0 +1,6 @@
+# Resources Directory
+
+This directory contains files bundled with the Clawpit application:
+- Recipe templates
+- Docker Compose templates
+- Configuration templates

@@ -1,0 +1,24 @@
+{
+  "id": "neo",
+  "name": "Neo",
+  "role": "Chief of Staff",
+  "skills": [
+    "github",
+    "slack",
+    "notion",
+    "himalaya",
+    "summarize",
+    "weather",
+    "healthcheck",
+    "session-logs"
+  ],
+  "identity": {
+    "name": "Neo",
+    "theme": "Chief of Staff AI (personal assistant + agent coordinator)",
+    "emoji": "🚀",
+    "avatar": "./workspace/avatar.png"
+  },
+  "tools": {
+    "profile": "full"
+  }
+}

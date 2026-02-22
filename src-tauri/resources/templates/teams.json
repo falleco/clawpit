@@ -1,0 +1,258 @@
+{
+  "teams": [
+    "zen",
+    "product-engineering",
+    "inbox-zero",
+    "copywriting-hub",
+    "data-analysis",
+    "competitor-analysis",
+    "email-outreach",
+    "community-manager",
+    "pr-reviewer",
+    "meeting-prep",
+    "local-business-reply",
+    "travel-check"
+  ],
+  "skills": [
+    {
+      "id": "bird",
+      "name": "Bird",
+      "description": "X/Twitter CLI for reading, searching, posting, and engagement via cookies.",
+      "url": "https://www.npmjs.com/package/@steipete/bird",
+      "requirements": {
+        "env": [],
+        "npm": ["@steipete/bird"],
+        "bin": ["bird"],
+        "uv": []
+      }
+    },
+    {
+      "id": "coding-agent",
+      "name": "Coding Agent",
+      "description": "Run Codex CLI, Claude Code, OpenCode, or Pi Coding Agent via background process for programmatic control.",
+      "url": "https://www.npmjs.com/package/@steipete/bird",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "github",
+      "name": "GitHub",
+      "description": "Interact with GitHub using the `gh` CLI. Use `gh issue`, `gh pr`, `gh run`, and `gh api` for issues, PRs, CI runs, and advanced queries.",
+      "url": "https://cli.github.com/",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["gh"],
+        "uv": []
+      }
+    },
+    {
+      "id": "goplaces",
+      "name": "Google Places",
+      "description": "Query Google Places API (New) via the goplaces CLI for text search, place details, resolve, and reviews.",
+      "url": "https://github.com/steipete/goplaces",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "healthcheck",
+      "name": "Healthcheck",
+      "description": "Host security hardening and risk-tolerance configuration for OpenClaw deployments.",
+      "url": "https://github.com/steipete/goplaces",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "himalaya",
+      "name": "Email Integration",
+      "description": "CLI to manage emails via IMAP/SMTP. Use `himalaya` to list, read, write, reply, forward, search, and organize emails from the terminal.",
+      "url": "https://github.com/pimalaya/himalaya",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["himalaya"],
+        "uv": []
+      }
+    },
+    {
+      "id": "local-places",
+      "name": "Local Places",
+      "description": "Search for places (restaurants, cafes, etc.) via Google Places API proxy on localhost.",
+      "url": "https://github.com/steipete/skill-creator",
+      "requirements": {
+        "env": ["GOOGLE_PLACES_API_KEY"],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "mcporter",
+      "name": "MCPorter",
+      "description": "Use the mcporter CLI to list, configure, auth, and call MCP servers/tools directly.",
+      "url": "https://www.npmjs.com/package/nano-banana-pro",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["mcporter"],
+        "uv": []
+      }
+    },
+    {
+      "id": "nano-banana-pro",
+      "name": "Nano Banana Pro",
+      "description": "Generate/edit images with Nano Banana Pro (Gemini 3 Pro Image). ",
+      "url": "https://www.npmjs.com/package/openai-image-gen",
+      "requirements": {
+        "env": ["GEMINI_API_KEY"],
+        "npm": ["@google/gemini-cli"],
+        "bin": ["gemini"],
+        "uv": []
+      }
+    },
+    {
+      "id": "nano-pdf",
+      "name": "Nano PDF",
+      "description": "Generate/edit PDF with Nano PDF (Gemini 3 Pro PDF). ",
+      "url": "https://www.npmjs.com/package/nano-pdf",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "uv": ["nano-pdf"],
+        "bin": ["nano-pdf"]
+      }
+    },
+    {
+      "id": "notion",
+      "name": "Notion",
+      "description": "Interact with Notion using the `notion` CLI. Use `notion list`, `notion get`, `notion create`, and `notion update` for pages, blocks, and more.",
+      "url": "https://www.npmjs.com/package/notion",
+      "requirements": {
+        "env": ["NOTION_API_KEY"],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "openai-image-gen",
+      "name": "OpenAI Image Gen",
+      "description": "Generate/edit images with OpenAI Image Generation API.",
+      "url": "https://www.npmjs.com/package/openai-image-gen",
+      "requirements": {
+        "env": ["OPENAI_API_KEY"],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "openai-whisper",
+      "name": "OpenAI Whisper",
+      "description": "Local speech-to-text with the Whisper CLI (no API key).",
+      "url": "https://www.npmjs.com/package/openai-whisper",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["whisper"],
+        "uv": []
+      }
+    },
+    {
+      "id": "openai-whisper-api",
+      "name": "OpenAI Whisper API",
+      "description": "Local speech-to-text with the Whisper CLI (no API key).",
+      "url": "https://www.npmjs.com/package/openai-whisper-api",
+      "requirements": {
+        "env": ["OPENAI_API_KEY"],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "sag",
+      "name": "Sag",
+      "description": "ElevenLabs text-to-speech with mac-style say UX.",
+      "url": "https://www.npmjs.com/package/pi-coding-agent",
+      "requirements": {
+        "env": ["ELEVENLABS_API_KEY"],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "session-logs",
+      "name": "Session Logs",
+      "description": "Track and analyze session logs for debugging and performance optimization.",
+      "url": "https://github.com/steipete/session-logs",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["jq", "rg"],
+        "uv": []
+      }
+    },
+    {
+      "id": "slack",
+      "name": "Slack",
+      "description": "Interact with Slack using the `slack` CLI. Use `slack list`, `slack get`, `slack create`, and `slack update` for channels, messages, and more.",
+      "url": "https://www.npmjs.com/package/slack",
+      "requirements": {
+        "env": ["SLACK_API_KEY"],
+        "npm": [],
+        "bin": ["slack"],
+        "uv": []
+      }
+    },
+    {
+      "id": "summarize",
+      "name": "Summarize",
+      "description": "Summarize text with the Summarize CLI.",
+      "url": "https://www.npmjs.com/package/summarize",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    },
+    {
+      "id": "tmux",
+      "name": "Tmux",
+      "description": "Interact with Tmux using the `tmux` CLI. Use `tmux list`, `tmux get`, `tmux create`, and `tmux update` for sessions, windows, and more.",
+      "url": "https://www.npmjs.com/package/tmux",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": ["tmux"],
+        "uv": []
+      }
+    },
+    {
+      "id": "weather",
+      "name": "Weather",
+      "description": "Get the weather for a location with the Weather CLI.",
+      "url": "https://www.npmjs.com/package/weather",
+      "requirements": {
+        "env": [],
+        "npm": [],
+        "bin": [],
+        "uv": []
+      }
+    }
+  ]
+}

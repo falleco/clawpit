@@ -1,0 +1,49 @@
+[package]
+name = "clawpit"
+version = "0.1.0"
+description = "Desktop application for managing OpenClaw - simplifying agentic AI setup for everyone"
+authors = ["Clawpit Team"]
+edition = "2021"
+license = "MIT"
+repository = "https://github.com/clawpit/clawpit"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[lib]
+# The `_lib` suffix may seem redundant but it is necessary
+# to make the lib name unique and wouldn't conflict with the bin name.
+# This seems to be only an issue on Windows, see https://github.com/rust-lang/cargo/issues/8519
+name = "clawpit_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = ["protocol-asset", "macos-private-api", "tray-icon"] }
+tauri-plugin-opener = "2"
+tauri-plugin-shell = "2"
+tauri-plugin-fs = "2"
+tauri-plugin-store = "2"
+tauri-plugin-dialog = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-process = "2"
+tauri-plugin-single-instance = "2"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+tokio = { version = "1", features = ["full"] }
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"
+rand = "0.8"
+hex = "0.4"
+reqwest = { version = "0.12", features = ["json"] }
+urlencoding = "2"
+base64 = "0.22"
+sha2 = "0.10"
+open = "5"
+regex = "1"
+tauri-plugin-liquid-glass = "0.1.6"
+image = "0.25"
+
+[target.'cfg(unix)'.dependencies]
+libc = "0.2"

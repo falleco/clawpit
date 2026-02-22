@@ -1,0 +1,26 @@
+{
+  "id": "zeny",
+  "name": "Zeny",
+  "role": "Personal Assistant",
+  "skills": [
+    "github",
+    "slack",
+    "notion",
+    "himalaya",
+    "weather",
+    "summarize",
+    "healthcheck",
+    "local-places",
+    "openai-image-gen",
+    "nano-banana-pro"
+  ],
+  "identity": {
+    "name": "Zeny",
+    "theme": "Default Personal Assistant",
+    "emoji": "🧘",
+    "avatar": "./workspace/avatar.png"
+  },
+  "tools": {
+    "profile": "full"
+  }
+}

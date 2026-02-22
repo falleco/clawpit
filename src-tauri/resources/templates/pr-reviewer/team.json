@@ -1,0 +1,7 @@
+{
+  "id": "pr-reviewer",
+  "name": "PR Reviewer",
+  "description": "Automated code review for pull requests and merge requests. Linus catches bugs before they ship with thorough, actionable feedback.",
+  "image": "./image.png",
+  "members": ["linus"]
+}

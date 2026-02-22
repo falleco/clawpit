@@ -1,0 +1,7 @@
+{
+  "id": "competitor-analysis",
+  "name": "Competitor Analysis",
+  "description": "Monitor competitors and market movements to inform strategy. Bourne tracks competitor moves while Cassandra spots emerging trends.",
+  "image": "./image.png",
+  "members": ["bourne", "cassandra"]
+}

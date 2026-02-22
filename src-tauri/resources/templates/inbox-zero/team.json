@@ -1,0 +1,7 @@
+{
+  "id": "inbox-zero",
+  "name": "Inbox Zero",
+  "description": "Email triage and management to keep the inbox under control. Jarvis sorts, prioritizes, and summarizes incoming email so you can finally achieve inbox zero.",
+  "image": "./image.png",
+  "members": ["jarvis"]
+}

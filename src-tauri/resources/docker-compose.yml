@@ -1,0 +1,115 @@
+services:
+  ################
+  #   Ingress    #
+  ################
+  # Ingress proxy for gateway - maps external port to internal gateway
+  openclaw-ingress:
+    image: alpine/socat:latest
+    container_name: ${OPENCLAW_CONTAINER_PREFIX:-openclaw}-ingress-gateway
+    command: TCP-LISTEN:${OPENCLAW_GATEWAY_PORT:-18789},fork,reuseaddr TCP:openclaw-gateway:18789
+    ports:
+      - "${OPENCLAW_GATEWAY_PORT:-18789}:${OPENCLAW_GATEWAY_PORT:-18789}"
+    networks:
+      - clawpit-internal
+      - clawpit-ingress
+    depends_on:
+      - openclaw-gateway
+    restart: unless-stopped
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+
+  # # Ingress proxy for bridge - maps external port to internal bridge
+  # ingress-bridge:
+  #   image: alpine/socat:latest
+  #   container_name: ${OPENCLAW_CONTAINER_PREFIX:-openclaw}-ingress-bridge
+  #   command: TCP-LISTEN:${OPENCLAW_BRIDGE_PORT:-18790},fork,reuseaddr TCP:openclaw-gateway:18790
+  #   ports:
+  #     - "${OPENCLAW_BRIDGE_PORT:-18790}:${OPENCLAW_BRIDGE_PORT:-18790}"
+  #   networks:
+  #     - clawpit-internal
+  #     - clawpit-ingress
+  #   depends_on:
+  #     - openclaw-gateway
+  #   restart: unless-stopped
+  #   read_only: true
+  #   security_opt:
+  #     - no-new-privileges:true
+
+  ################
+  #   OpenClaw   #
+  ################
+  openclaw-gateway:
+    image: ${OPENCLAW_IMAGE:-openclaw:local}
+    container_name: ${OPENCLAW_CONTAINER_PREFIX:-openclaw}-gateway
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      # Proxy configuration for secure egress through clawpit-egress
+      HTTP_PROXY: http://clawpit-egress:3128
+      HTTPS_PROXY: http://clawpit-egress:3128
+      NO_PROXY: localhost,127.0.0.1,::1,clawpit-egress
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+    # No ports exposed - access only through ingress proxy
+    networks:
+      - clawpit-internal
+    init: true
+    restart: unless-stopped
+    command:
+      [
+        "node",
+        "dist/index.js",
+        "gateway",
+        "--bind",
+        "${OPENCLAW_GATEWAY_BIND:-lan}",
+        "--port",
+        "18789",
+      ]
+
+  openclaw-cli:
+    image: ${OPENCLAW_IMAGE:-openclaw:local}
+    container_name: ${OPENCLAW_CONTAINER_PREFIX:-openclaw}-cli
+    environment:
+      HOME: /home/node
+      TERM: xterm-256color
+      OPENCLAW_GATEWAY_TOKEN: ${OPENCLAW_GATEWAY_TOKEN}
+      BROWSER: echo
+      CLAUDE_AI_SESSION_KEY: ${CLAUDE_AI_SESSION_KEY}
+      CLAUDE_WEB_SESSION_KEY: ${CLAUDE_WEB_SESSION_KEY}
+      CLAUDE_WEB_COOKIE: ${CLAUDE_WEB_COOKIE}
+      # Proxy configuration for secure egress through clawpit-egress
+      HTTP_PROXY: http://clawpit-egress:3128
+      HTTPS_PROXY: http://clawpit-egress:3128
+      NO_PROXY: localhost,127.0.0.1,::1,clawpit-egress
+    volumes:
+      - ${OPENCLAW_CONFIG_DIR}:/home/node/.openclaw
+      - ${OPENCLAW_WORKSPACE_DIR}:/home/node/.openclaw/workspace
+    networks:
+      - clawpit-internal
+    stdin_open: true
+    tty: true
+    init: true
+    entrypoint: ["node", "dist/index.js"]
+
+################
+#   Networks   #
+################
+# These networks are created by the core docker-compose.yml
+# and must be running before starting any instance
+#
+# clawpit-internal: Internal network with no internet access
+#                   All containers communicate through this network
+#
+# clawpit-ingress:  External-facing network for ingress proxies only
+#                   Only socat containers have access to expose ports
+networks:
+  clawpit-internal:
+    external: true
+    name: core_clawpit-internal
+  clawpit-ingress:

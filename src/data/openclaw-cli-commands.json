@@ -1,0 +1,1292 @@
+{
+  "globalFlags": [
+    {
+      "flag": "--dev",
+      "description": "Isolate state under ~/.openclaw-dev and shift default ports"
+    },
+    {
+      "flag": "--profile <name>",
+      "description": "Isolate state under ~/.openclaw-<name>"
+    },
+    { "flag": "--no-color", "description": "Disable ANSI colors" },
+    {
+      "flag": "--update",
+      "description": "Shorthand for openclaw update (source installs only)"
+    },
+    { "flag": "-V, --version, -v", "description": "Print version and exit" }
+  ],
+  "commands": [
+    {
+      "command": "help",
+      "description": "Show help information for commands",
+      "usage": "help [command]"
+    },
+    {
+      "command": "setup",
+      "description": "Initialize config and workspace",
+      "options": [
+        { "flag": "--workspace <dir>", "description": "Agent workspace path" },
+        { "flag": "--wizard", "description": "Run the onboarding wizard" },
+        {
+          "flag": "--non-interactive",
+          "description": "Run wizard without prompts"
+        },
+        { "flag": "--mode <local|remote>", "description": "Wizard mode" },
+        { "flag": "--remote-url <url>", "description": "Remote Gateway URL" },
+        {
+          "flag": "--remote-token <token>",
+          "description": "Remote Gateway token"
+        }
+      ]
+    },
+    {
+      "command": "onboard",
+      "description": "Interactive wizard to set up gateway, workspace, and skills",
+      "options": [
+        { "flag": "--workspace <dir>", "description": "Agent workspace path" },
+        {
+          "flag": "--reset",
+          "description": "Reset config + credentials + sessions + workspace before wizard"
+        },
+        { "flag": "--non-interactive", "description": "Run without prompts" },
+        { "flag": "--mode <local|remote>", "description": "Wizard mode" },
+        {
+          "flag": "--flow <quickstart|advanced|manual>",
+          "description": "Onboarding flow type"
+        },
+        { "flag": "--json", "description": "Output JSON" }
+      ]
+    },
+    {
+      "command": "configure",
+      "description": "Interactive configuration wizard (models, channels, skills, gateway)"
+    },
+    {
+      "command": "config",
+      "description": "Non-interactive config helpers (get/set/unset)",
+      "subcommands": [
+        {
+          "command": "get",
+          "description": "Print a config value (dot/bracket path)",
+          "usage": "config get <path>"
+        },
+        {
+          "command": "set",
+          "description": "Set a config value (JSON5 or raw string)",
+          "usage": "config set <path> <value>",
+          "options": [
+            { "flag": "--json", "description": "Require JSON5 parsing" }
+          ]
+        },
+        {
+          "command": "unset",
+          "description": "Remove a config value",
+          "usage": "config unset <path>"
+        }
+      ]
+    },
+    {
+      "command": "doctor",
+      "description": "Health checks and quick fixes for config and gateway",
+      "options": [
+        {
+          "flag": "--no-workspace-suggestions",
+          "description": "Disable workspace memory hints"
+        },
+        { "flag": "--yes", "description": "Accept defaults without prompting" },
+        {
+          "flag": "--non-interactive",
+          "description": "Skip prompts; apply safe migrations only"
+        },
+        {
+          "flag": "--deep",
+          "description": "Scan system services for extra gateway installs"
+        }
+      ]
+    },
+    {
+      "command": "security",
+      "description": "Security audit commands",
+      "subcommands": [
+        {
+          "command": "audit",
+          "description": "Audit config + local state for security issues",
+          "options": [
+            {
+              "flag": "--deep",
+              "description": "Best-effort live Gateway probe"
+            },
+            {
+              "flag": "--fix",
+              "description": "Tighten safe defaults and chmod state/config"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "reset",
+      "description": "Reset local config/state (keeps CLI installed)",
+      "options": [
+        {
+          "flag": "--scope <config|config+creds+sessions|full>",
+          "description": "Reset scope"
+        },
+        { "flag": "--yes", "description": "Skip confirmation" },
+        { "flag": "--non-interactive", "description": "Non-interactive mode" },
+        { "flag": "--dry-run", "description": "Show what would be reset" }
+      ]
+    },
+    {
+      "command": "uninstall",
+      "description": "Uninstall the gateway service and local data",
+      "options": [
+        { "flag": "--service", "description": "Uninstall service" },
+        { "flag": "--state", "description": "Remove state" },
+        { "flag": "--workspace", "description": "Remove workspace" },
+        { "flag": "--app", "description": "Remove app" },
+        { "flag": "--all", "description": "Remove everything" },
+        { "flag": "--yes", "description": "Skip confirmation" },
+        { "flag": "--non-interactive", "description": "Non-interactive mode" },
+        { "flag": "--dry-run", "description": "Show what would be removed" }
+      ]
+    },
+    {
+      "command": "update",
+      "description": "Update OpenClaw to the latest version"
+    },
+    {
+      "command": "channels",
+      "description": "Manage chat channel accounts (WhatsApp/Telegram/Discord/etc)",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "Show configured channels and auth profiles",
+          "options": [
+            {
+              "flag": "--no-usage",
+              "description": "Skip model provider usage snapshots"
+            },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "status",
+          "description": "Check gateway reachability and channel health",
+          "options": [{ "flag": "--probe", "description": "Run extra checks" }]
+        },
+        {
+          "command": "logs",
+          "description": "Show recent channel logs from gateway",
+          "options": [
+            {
+              "flag": "--channel <name|all>",
+              "description": "Filter by channel"
+            },
+            { "flag": "--lines <n>", "description": "Number of lines" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "add",
+          "description": "Add a new channel account",
+          "options": [
+            {
+              "flag": "--channel <name>",
+              "description": "Channel type (whatsapp|telegram|discord|slack|etc)"
+            },
+            { "flag": "--account <id>", "description": "Account ID" },
+            { "flag": "--name <label>", "description": "Display name" },
+            { "flag": "--token <token>", "description": "Bot token" }
+          ]
+        },
+        {
+          "command": "remove",
+          "description": "Remove a channel account",
+          "options": [
+            { "flag": "--channel <name>", "description": "Channel type" },
+            { "flag": "--account <id>", "description": "Account ID" },
+            { "flag": "--delete", "description": "Delete config entries" }
+          ]
+        },
+        {
+          "command": "login",
+          "description": "Interactive channel login (WhatsApp Web)",
+          "options": [
+            { "flag": "--channel <name>", "description": "Channel type" },
+            { "flag": "--account <id>", "description": "Account ID" },
+            { "flag": "--verbose", "description": "Verbose output" }
+          ]
+        },
+        {
+          "command": "logout",
+          "description": "Log out of a channel session",
+          "options": [
+            { "flag": "--channel <name>", "description": "Channel type" },
+            { "flag": "--account <id>", "description": "Account ID" }
+          ]
+        },
+        {
+          "command": "capabilities",
+          "description": "Fetch provider capability hints",
+          "options": [
+            { "flag": "--channel <name>", "description": "Channel type" },
+            { "flag": "--target <id>", "description": "Target channel ID" }
+          ]
+        },
+        {
+          "command": "resolve",
+          "description": "Resolve channel/user names to IDs",
+          "options": [
+            { "flag": "--channel <name>", "description": "Channel type" },
+            { "flag": "--kind <user|group|auto>", "description": "Target type" }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "skills",
+      "description": "List and inspect available skills",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List all skills",
+          "options": [
+            { "flag": "--eligible", "description": "Show only ready skills" },
+            { "flag": "--json", "description": "Output JSON" },
+            {
+              "flag": "-v, --verbose",
+              "description": "Include missing requirements"
+            }
+          ]
+        },
+        {
+          "command": "info",
+          "description": "Show details for one skill",
+          "usage": "skills info <name>"
+        },
+        {
+          "command": "check",
+          "description": "Summary of ready vs missing requirements"
+        }
+      ]
+    },
+    {
+      "command": "plugins",
+      "description": "Manage extensions and their config",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List installed plugins",
+          "options": [{ "flag": "--json", "description": "Output JSON" }]
+        },
+        {
+          "command": "info",
+          "description": "Show details for a plugin",
+          "usage": "plugins info <id>"
+        },
+        {
+          "command": "install",
+          "description": "Install a plugin",
+          "usage": "plugins install <path|.tgz|npm-spec>"
+        },
+        {
+          "command": "enable",
+          "description": "Enable a plugin",
+          "usage": "plugins enable <id>"
+        },
+        {
+          "command": "disable",
+          "description": "Disable a plugin",
+          "usage": "plugins disable <id>"
+        },
+        {
+          "command": "doctor",
+          "description": "Report plugin load errors"
+        }
+      ]
+    },
+    {
+      "command": "memory",
+      "description": "Vector search over MEMORY.md files",
+      "subcommands": [
+        {
+          "command": "status",
+          "description": "Show index stats"
+        },
+        {
+          "command": "index",
+          "description": "Reindex memory files"
+        },
+        {
+          "command": "search",
+          "description": "Semantic search over memory",
+          "usage": "memory search \"<query>\""
+        }
+      ]
+    },
+    {
+      "command": "message",
+      "description": "Unified outbound messaging and channel actions",
+      "subcommands": [
+        {
+          "command": "send",
+          "description": "Send a message",
+          "options": [
+            { "flag": "--target <dest>", "description": "Target recipient" },
+            { "flag": "--message <text>", "description": "Message text" },
+            { "flag": "--channel <name>", "description": "Channel type" }
+          ]
+        },
+        {
+          "command": "poll",
+          "description": "Create a poll",
+          "options": [
+            { "flag": "--target <dest>", "description": "Target recipient" },
+            {
+              "flag": "--poll-question <text>",
+              "description": "Poll question"
+            },
+            {
+              "flag": "--poll-option <text>",
+              "description": "Poll option (repeatable)"
+            }
+          ]
+        },
+        {
+          "command": "react",
+          "description": "React to a message"
+        },
+        {
+          "command": "read",
+          "description": "Mark messages as read"
+        },
+        {
+          "command": "edit",
+          "description": "Edit a message"
+        },
+        {
+          "command": "delete",
+          "description": "Delete a message"
+        },
+        {
+          "command": "pin",
+          "description": "Pin a message"
+        },
+        {
+          "command": "unpin",
+          "description": "Unpin a message"
+        },
+        {
+          "command": "search",
+          "description": "Search messages"
+        }
+      ]
+    },
+    {
+      "command": "agent",
+      "description": "Run one agent turn via the Gateway",
+      "options": [
+        {
+          "flag": "--message <text>",
+          "description": "Message to send (required)"
+        },
+        { "flag": "--to <dest>", "description": "Target destination" },
+        { "flag": "--agent <id>", "description": "Target agent ID" },
+        { "flag": "--session-id <id>", "description": "Session ID" },
+        {
+          "flag": "--thinking <off|minimal|low|medium|high|xhigh>",
+          "description": "Thinking level"
+        },
+        { "flag": "--verbose <on|full|off>", "description": "Verbose output" },
+        { "flag": "--channel <name>", "description": "Channel type" },
+        { "flag": "--local", "description": "Use local embedded agent" },
+        { "flag": "--deliver", "description": "Deliver the reply" },
+        { "flag": "--json", "description": "Output JSON" },
+        { "flag": "--timeout <seconds>", "description": "Timeout in seconds" }
+      ]
+    },
+    {
+      "command": "agents",
+      "description": "Manage isolated agents (workspaces + auth + routing)",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List configured agents",
+          "options": [
+            { "flag": "--json", "description": "Output JSON" },
+            { "flag": "--bindings", "description": "Show bindings" }
+          ]
+        },
+        {
+          "command": "add",
+          "description": "Add a new isolated agent",
+          "usage": "agents add [name]",
+          "options": [
+            {
+              "flag": "--workspace <dir>",
+              "description": "Workspace directory"
+            },
+            { "flag": "--model <id>", "description": "Model ID" },
+            { "flag": "--agent-dir <dir>", "description": "Agent directory" },
+            {
+              "flag": "--bind <channel[:accountId]>",
+              "description": "Channel binding (repeatable)"
+            },
+            {
+              "flag": "--non-interactive",
+              "description": "Non-interactive mode"
+            },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "delete",
+          "description": "Delete an agent and prune its workspace",
+          "usage": "agents delete <id>",
+          "options": [
+            { "flag": "--force", "description": "Force deletion" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "set-identity",
+          "description": "Set agent identity fields",
+          "options": [
+            {
+              "flag": "--workspace <dir>",
+              "description": "Workspace directory"
+            },
+            { "flag": "--agent <id>", "description": "Agent ID" },
+            {
+              "flag": "--from-identity",
+              "description": "Read from IDENTITY.md"
+            },
+            { "flag": "--name <name>", "description": "Agent name" },
+            { "flag": "--emoji <emoji>", "description": "Agent emoji" },
+            { "flag": "--avatar <path>", "description": "Avatar path" }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "acp",
+      "description": "Run the ACP bridge for IDE integrations",
+      "options": [
+        { "flag": "--url <url>", "description": "Gateway WebSocket URL" },
+        { "flag": "--token <token>", "description": "Gateway auth token" },
+        {
+          "flag": "--password <password>",
+          "description": "Gateway auth password"
+        },
+        { "flag": "--session <key>", "description": "Default session key" },
+        {
+          "flag": "--session-label <label>",
+          "description": "Default session label"
+        },
+        {
+          "flag": "--reset-session",
+          "description": "Reset session before first use"
+        },
+        { "flag": "-v, --verbose", "description": "Verbose logging" }
+      ],
+      "subcommands": [
+        {
+          "command": "client",
+          "description": "Debug ACP client (interactive)",
+          "options": [
+            { "flag": "--cwd <dir>", "description": "Working directory" },
+            {
+              "flag": "--server <command>",
+              "description": "ACP server command"
+            },
+            {
+              "flag": "--server-args <args>",
+              "description": "Extra server arguments"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "status",
+      "description": "Show linked session health and recent recipients",
+      "options": [
+        { "flag": "--json", "description": "Output JSON" },
+        { "flag": "--all", "description": "Full diagnosis (pasteable)" },
+        { "flag": "--deep", "description": "Probe channels" },
+        { "flag": "--usage", "description": "Show model provider usage/quota" },
+        { "flag": "--timeout <ms>", "description": "Timeout in milliseconds" },
+        { "flag": "--verbose", "description": "Verbose output" },
+        { "flag": "--debug", "description": "Alias for --verbose" }
+      ]
+    },
+    {
+      "command": "health",
+      "description": "Fetch health from the running Gateway",
+      "options": [
+        { "flag": "--json", "description": "Output JSON" },
+        { "flag": "--timeout <ms>", "description": "Timeout in milliseconds" },
+        {
+          "flag": "--verbose",
+          "description": "Verbose output with live probes"
+        }
+      ]
+    },
+    {
+      "command": "sessions",
+      "description": "List stored conversation sessions",
+      "options": [
+        { "flag": "--json", "description": "Output JSON" },
+        { "flag": "--verbose", "description": "Verbose output" },
+        { "flag": "--store <path>", "description": "Session store path" },
+        {
+          "flag": "--active <minutes>",
+          "description": "Show active sessions within minutes"
+        }
+      ]
+    },
+    {
+      "command": "gateway",
+      "description": "Run and manage the WebSocket Gateway",
+      "options": [
+        { "flag": "--port <port>", "description": "WebSocket port" },
+        {
+          "flag": "--bind <loopback|lan|tailnet|auto|custom>",
+          "description": "Listener bind mode"
+        },
+        { "flag": "--auth <token|password>", "description": "Auth mode" },
+        { "flag": "--token <token>", "description": "Auth token" },
+        { "flag": "--password <password>", "description": "Auth password" },
+        {
+          "flag": "--tailscale <off|serve|funnel>",
+          "description": "Tailscale mode"
+        },
+        {
+          "flag": "--allow-unconfigured",
+          "description": "Allow start without config"
+        },
+        { "flag": "--dev", "description": "Dev mode" },
+        { "flag": "--force", "description": "Kill existing listener" },
+        { "flag": "--verbose", "description": "Verbose logs" }
+      ],
+      "subcommands": [
+        {
+          "command": "run",
+          "description": "Run Gateway in foreground"
+        },
+        {
+          "command": "call",
+          "description": "Low-level RPC helper",
+          "usage": "gateway call <method>",
+          "options": [
+            {
+              "flag": "--params <json>",
+              "description": "RPC parameters as JSON"
+            }
+          ]
+        },
+        {
+          "command": "health",
+          "description": "Check Gateway health via RPC"
+        },
+        {
+          "command": "status",
+          "description": "Show Gateway service status",
+          "options": [
+            { "flag": "--json", "description": "Output JSON" },
+            { "flag": "--no-probe", "description": "Skip RPC probe" },
+            { "flag": "--deep", "description": "Scan system services" }
+          ]
+        },
+        {
+          "command": "probe",
+          "description": "Debug probe for all reachable gateways",
+          "options": [
+            { "flag": "--json", "description": "Output JSON" },
+            {
+              "flag": "--ssh <target>",
+              "description": "SSH target (user@host)"
+            }
+          ]
+        },
+        {
+          "command": "discover",
+          "description": "Scan for Gateway beacons (Bonjour)",
+          "options": [
+            {
+              "flag": "--timeout <ms>",
+              "description": "Timeout in milliseconds"
+            },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "install",
+          "description": "Install Gateway as a service",
+          "options": [
+            { "flag": "--port <port>", "description": "WebSocket port" },
+            { "flag": "--runtime <node|bun>", "description": "Runtime to use" },
+            { "flag": "--token <token>", "description": "Auth token" },
+            { "flag": "--force", "description": "Force reinstall" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "uninstall",
+          "description": "Uninstall Gateway service"
+        },
+        {
+          "command": "start",
+          "description": "Start Gateway service"
+        },
+        {
+          "command": "stop",
+          "description": "Stop Gateway service"
+        },
+        {
+          "command": "restart",
+          "description": "Restart Gateway service"
+        }
+      ]
+    },
+    {
+      "command": "logs",
+      "description": "Tail Gateway file logs via RPC",
+      "options": [
+        { "flag": "--follow", "description": "Follow log output" },
+        { "flag": "--limit <n>", "description": "Limit number of lines" },
+        { "flag": "--json", "description": "Output JSON" },
+        { "flag": "--plain", "description": "Plain text output" },
+        { "flag": "--no-color", "description": "Disable colors" }
+      ]
+    },
+    {
+      "command": "system",
+      "description": "System event and presence commands",
+      "subcommands": [
+        {
+          "command": "event",
+          "description": "Enqueue a system event",
+          "options": [
+            { "flag": "--text <text>", "description": "Event text (required)" },
+            {
+              "flag": "--mode <now|next-heartbeat>",
+              "description": "Delivery mode"
+            },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "heartbeat",
+          "description": "Heartbeat controls",
+          "subcommands": [
+            { "command": "last", "description": "Show last heartbeat" },
+            { "command": "enable", "description": "Enable heartbeat" },
+            { "command": "disable", "description": "Disable heartbeat" }
+          ]
+        },
+        {
+          "command": "presence",
+          "description": "List system presence entries",
+          "options": [{ "flag": "--json", "description": "Output JSON" }]
+        }
+      ]
+    },
+    {
+      "command": "models",
+      "description": "Manage AI models and auth",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List available models",
+          "options": [
+            { "flag": "--all", "description": "Show all models" },
+            { "flag": "--local", "description": "Show local models only" },
+            {
+              "flag": "--provider <name>",
+              "description": "Filter by provider"
+            },
+            { "flag": "--json", "description": "Output JSON" },
+            { "flag": "--plain", "description": "Plain output" }
+          ]
+        },
+        {
+          "command": "status",
+          "description": "Show model status and auth overview",
+          "options": [
+            { "flag": "--json", "description": "Output JSON" },
+            { "flag": "--plain", "description": "Plain output" },
+            {
+              "flag": "--check",
+              "description": "Exit with code for expired/missing"
+            },
+            { "flag": "--probe", "description": "Live probe of auth profiles" }
+          ]
+        },
+        {
+          "command": "set",
+          "description": "Set default primary model",
+          "usage": "models set <model>"
+        },
+        {
+          "command": "set-image",
+          "description": "Set default image model",
+          "usage": "models set-image <model>"
+        },
+        {
+          "command": "scan",
+          "description": "Scan for available models",
+          "options": [
+            {
+              "flag": "--provider <name>",
+              "description": "Filter by provider"
+            },
+            { "flag": "--yes", "description": "Accept defaults" },
+            { "flag": "--set-default", "description": "Set as default" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "aliases",
+          "description": "Manage model aliases",
+          "subcommands": [
+            { "command": "list", "description": "List aliases" },
+            {
+              "command": "add",
+              "description": "Add an alias",
+              "usage": "aliases add <alias> <model>"
+            },
+            {
+              "command": "remove",
+              "description": "Remove an alias",
+              "usage": "aliases remove <alias>"
+            }
+          ]
+        },
+        {
+          "command": "fallbacks",
+          "description": "Manage model fallbacks",
+          "subcommands": [
+            { "command": "list", "description": "List fallbacks" },
+            {
+              "command": "add",
+              "description": "Add a fallback",
+              "usage": "fallbacks add <model>"
+            },
+            {
+              "command": "remove",
+              "description": "Remove a fallback",
+              "usage": "fallbacks remove <model>"
+            },
+            { "command": "clear", "description": "Clear all fallbacks" }
+          ]
+        },
+        {
+          "command": "auth",
+          "description": "Manage model authentication",
+          "subcommands": [
+            { "command": "add", "description": "Interactive auth helper" },
+            {
+              "command": "setup-token",
+              "description": "Setup auth token",
+              "options": [
+                { "flag": "--provider <name>", "description": "Provider name" },
+                { "flag": "--yes", "description": "Accept defaults" }
+              ]
+            },
+            {
+              "command": "paste-token",
+              "description": "Paste an auth token",
+              "options": [
+                { "flag": "--provider <name>", "description": "Provider name" },
+                { "flag": "--profile-id <id>", "description": "Profile ID" },
+                {
+                  "flag": "--expires-in <duration>",
+                  "description": "Token expiry"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "sandbox",
+      "description": "Manage code execution sandboxes",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List sandboxes"
+        },
+        {
+          "command": "recreate",
+          "description": "Recreate a sandbox"
+        },
+        {
+          "command": "explain",
+          "description": "Explain sandbox configuration"
+        }
+      ]
+    },
+    {
+      "command": "cron",
+      "description": "Manage scheduled jobs",
+      "subcommands": [
+        {
+          "command": "status",
+          "description": "Show cron status",
+          "options": [{ "flag": "--json", "description": "Output JSON" }]
+        },
+        {
+          "command": "list",
+          "description": "List scheduled jobs",
+          "options": [
+            { "flag": "--all", "description": "Show all jobs" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "add",
+          "description": "Add a new scheduled job",
+          "options": [
+            { "flag": "--name <name>", "description": "Job name (required)" },
+            { "flag": "--at <time>", "description": "Run at specific time" },
+            { "flag": "--every <interval>", "description": "Run at interval" },
+            { "flag": "--cron <expr>", "description": "Cron expression" },
+            {
+              "flag": "--system-event <text>",
+              "description": "System event payload"
+            },
+            { "flag": "--message <text>", "description": "Message payload" }
+          ]
+        },
+        {
+          "command": "edit",
+          "description": "Edit a scheduled job",
+          "usage": "cron edit <id>"
+        },
+        {
+          "command": "rm",
+          "description": "Remove a scheduled job",
+          "usage": "cron rm <id>"
+        },
+        {
+          "command": "enable",
+          "description": "Enable a scheduled job",
+          "usage": "cron enable <id>"
+        },
+        {
+          "command": "disable",
+          "description": "Disable a scheduled job",
+          "usage": "cron disable <id>"
+        },
+        {
+          "command": "runs",
+          "description": "Show job run history",
+          "options": [
+            { "flag": "--id <id>", "description": "Job ID" },
+            { "flag": "--limit <n>", "description": "Limit results" }
+          ]
+        },
+        {
+          "command": "run",
+          "description": "Run a job immediately",
+          "usage": "cron run <id>",
+          "options": [
+            { "flag": "--force", "description": "Force run even if disabled" }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "nodes",
+      "description": "Manage paired nodes (Gateway RPC)",
+      "subcommands": [
+        {
+          "command": "status",
+          "description": "Show nodes status",
+          "options": [
+            { "flag": "--connected", "description": "Show only connected" },
+            {
+              "flag": "--last-connected <duration>",
+              "description": "Filter by last connection"
+            },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "list",
+          "description": "List all nodes",
+          "options": [
+            { "flag": "--connected", "description": "Show only connected" },
+            { "flag": "--json", "description": "Output JSON" }
+          ]
+        },
+        {
+          "command": "describe",
+          "description": "Show node details",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Node identifier" }
+          ]
+        },
+        {
+          "command": "pending",
+          "description": "List pending pairing requests"
+        },
+        {
+          "command": "approve",
+          "description": "Approve a pairing request",
+          "usage": "nodes approve <requestId>"
+        },
+        {
+          "command": "reject",
+          "description": "Reject a pairing request",
+          "usage": "nodes reject <requestId>"
+        },
+        {
+          "command": "rename",
+          "description": "Rename a node",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Node identifier" },
+            {
+              "flag": "--name <displayName>",
+              "description": "New display name"
+            }
+          ]
+        },
+        {
+          "command": "invoke",
+          "description": "Invoke a command on a node",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Node identifier" },
+            {
+              "flag": "--command <command>",
+              "description": "Command to invoke"
+            },
+            { "flag": "--params <json>", "description": "Command parameters" }
+          ]
+        },
+        {
+          "command": "run",
+          "description": "Run a shell command on a node",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Node identifier" },
+            { "flag": "--cwd <path>", "description": "Working directory" },
+            { "flag": "--env <KEY=VAL>", "description": "Environment variable" }
+          ]
+        },
+        {
+          "command": "notify",
+          "description": "Send a notification to a node (macOS)",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Node identifier" },
+            { "flag": "--title <text>", "description": "Notification title" },
+            { "flag": "--body <text>", "description": "Notification body" }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "devices",
+      "description": "List paired devices"
+    },
+    {
+      "command": "node",
+      "description": "Run headless node host or manage as service",
+      "subcommands": [
+        {
+          "command": "run",
+          "description": "Run node host",
+          "options": [
+            { "flag": "--host <gateway-host>", "description": "Gateway host" },
+            { "flag": "--port <port>", "description": "Gateway port" }
+          ]
+        },
+        {
+          "command": "status",
+          "description": "Show node service status"
+        },
+        {
+          "command": "install",
+          "description": "Install node as a service",
+          "options": [
+            { "flag": "--host <gateway-host>", "description": "Gateway host" },
+            { "flag": "--port <port>", "description": "Gateway port" },
+            { "flag": "--node-id <id>", "description": "Node ID" },
+            { "flag": "--display-name <name>", "description": "Display name" },
+            { "flag": "--runtime <node|bun>", "description": "Runtime" },
+            { "flag": "--force", "description": "Force reinstall" }
+          ]
+        },
+        {
+          "command": "uninstall",
+          "description": "Uninstall node service"
+        },
+        {
+          "command": "start",
+          "description": "Start node service"
+        },
+        {
+          "command": "stop",
+          "description": "Stop node service"
+        },
+        {
+          "command": "restart",
+          "description": "Restart node service"
+        }
+      ]
+    },
+    {
+      "command": "approvals",
+      "description": "Manage exec approvals",
+      "subcommands": [
+        {
+          "command": "get",
+          "description": "Get current approvals",
+          "options": [
+            { "flag": "--node <id|name|ip>", "description": "Target node" },
+            { "flag": "--gateway", "description": "Target gateway" }
+          ]
+        },
+        {
+          "command": "set",
+          "description": "Set approvals from file",
+          "options": [
+            { "flag": "--file <path>", "description": "Approvals file" },
+            { "flag": "--node <id|name|ip>", "description": "Target node" },
+            { "flag": "--gateway", "description": "Target gateway" }
+          ]
+        },
+        {
+          "command": "allowlist",
+          "description": "Manage allowlist",
+          "subcommands": [
+            {
+              "command": "add",
+              "description": "Add to allowlist",
+              "usage": "allowlist add <pattern>",
+              "options": [
+                { "flag": "--agent <id>", "description": "Agent ID" },
+                { "flag": "--node <id|name|ip>", "description": "Target node" }
+              ]
+            },
+            {
+              "command": "remove",
+              "description": "Remove from allowlist",
+              "usage": "allowlist remove <pattern>"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "browser",
+      "description": "Browser control CLI (tabs, snapshots, actions)",
+      "options": [
+        {
+          "flag": "--url <gatewayWsUrl>",
+          "description": "Gateway WebSocket URL"
+        },
+        { "flag": "--token <token>", "description": "Gateway token" },
+        { "flag": "--timeout <ms>", "description": "Request timeout" },
+        {
+          "flag": "--browser-profile <name>",
+          "description": "Browser profile"
+        },
+        { "flag": "--json", "description": "Output JSON" }
+      ],
+      "subcommands": [
+        { "command": "status", "description": "Show browser status" },
+        { "command": "start", "description": "Start browser" },
+        { "command": "stop", "description": "Stop browser" },
+        { "command": "reset-profile", "description": "Reset browser profile" },
+        { "command": "tabs", "description": "List open tabs" },
+        {
+          "command": "open",
+          "description": "Open a URL",
+          "usage": "browser open <url>"
+        },
+        {
+          "command": "focus",
+          "description": "Focus a tab",
+          "usage": "browser focus <targetId>"
+        },
+        {
+          "command": "close",
+          "description": "Close a tab",
+          "usage": "browser close [targetId]"
+        },
+        { "command": "profiles", "description": "List browser profiles" },
+        {
+          "command": "create-profile",
+          "description": "Create a browser profile",
+          "options": [
+            { "flag": "--name <name>", "description": "Profile name" },
+            { "flag": "--color <hex>", "description": "Profile color" }
+          ]
+        },
+        {
+          "command": "delete-profile",
+          "description": "Delete a browser profile",
+          "options": [
+            { "flag": "--name <name>", "description": "Profile name" }
+          ]
+        },
+        {
+          "command": "screenshot",
+          "description": "Take a screenshot",
+          "options": [
+            { "flag": "--full-page", "description": "Full page screenshot" },
+            { "flag": "--type <png|jpeg>", "description": "Image type" }
+          ]
+        },
+        {
+          "command": "snapshot",
+          "description": "Get page snapshot",
+          "options": [
+            { "flag": "--format <aria|ai>", "description": "Snapshot format" },
+            { "flag": "--compact", "description": "Compact output" }
+          ]
+        },
+        {
+          "command": "navigate",
+          "description": "Navigate to URL",
+          "usage": "browser navigate <url>"
+        },
+        {
+          "command": "click",
+          "description": "Click an element",
+          "usage": "browser click <ref>"
+        },
+        {
+          "command": "type",
+          "description": "Type text",
+          "usage": "browser type <ref> <text>"
+        },
+        {
+          "command": "press",
+          "description": "Press a key",
+          "usage": "browser press <key>"
+        },
+        {
+          "command": "hover",
+          "description": "Hover over element",
+          "usage": "browser hover <ref>"
+        },
+        { "command": "wait", "description": "Wait for condition" },
+        { "command": "evaluate", "description": "Evaluate JavaScript" },
+        { "command": "console", "description": "Get console logs" },
+        { "command": "pdf", "description": "Export page as PDF" }
+      ]
+    },
+    {
+      "command": "hooks",
+      "description": "Manage gateway hooks",
+      "subcommands": [
+        { "command": "list", "description": "List hooks" },
+        {
+          "command": "info",
+          "description": "Show hook info",
+          "usage": "hooks info <name>"
+        },
+        { "command": "check", "description": "Check hook requirements" },
+        {
+          "command": "enable",
+          "description": "Enable a hook",
+          "usage": "hooks enable <name>"
+        },
+        {
+          "command": "disable",
+          "description": "Disable a hook",
+          "usage": "hooks disable <name>"
+        },
+        { "command": "install", "description": "Install a hook" },
+        { "command": "update", "description": "Update hooks" }
+      ]
+    },
+    {
+      "command": "webhooks",
+      "description": "Webhook integrations",
+      "subcommands": [
+        {
+          "command": "gmail",
+          "description": "Gmail Pub/Sub webhook",
+          "subcommands": [
+            {
+              "command": "setup",
+              "description": "Setup Gmail webhook",
+              "options": [
+                {
+                  "flag": "--account <email>",
+                  "description": "Gmail account (required)"
+                },
+                { "flag": "--project <id>", "description": "GCP project ID" },
+                { "flag": "--topic <name>", "description": "Pub/Sub topic" }
+              ]
+            },
+            { "command": "run", "description": "Run Gmail webhook" }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "pairing",
+      "description": "Approve DM pairing requests",
+      "subcommands": [
+        {
+          "command": "list",
+          "description": "List pairing requests",
+          "usage": "pairing list <channel>",
+          "options": [{ "flag": "--json", "description": "Output JSON" }]
+        },
+        {
+          "command": "approve",
+          "description": "Approve a pairing request",
+          "usage": "pairing approve <channel> <code>",
+          "options": [{ "flag": "--notify", "description": "Notify user" }]
+        }
+      ]
+    },
+    {
+      "command": "docs",
+      "description": "Search the live docs index",
+      "usage": "docs [query...]"
+    },
+    {
+      "command": "dns",
+      "description": "DNS helper commands",
+      "subcommands": [
+        {
+          "command": "setup",
+          "description": "Setup wide-area discovery DNS",
+          "options": [
+            {
+              "flag": "--apply",
+              "description": "Install/update CoreDNS config"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "command": "tui",
+      "description": "Open the terminal UI connected to the Gateway",
+      "options": [
+        { "flag": "--url <url>", "description": "Gateway URL" },
+        { "flag": "--token <token>", "description": "Auth token" },
+        { "flag": "--password <password>", "description": "Auth password" },
+        { "flag": "--session <key>", "description": "Session key" },
+        { "flag": "--deliver", "description": "Deliver messages" },
+        { "flag": "--thinking <level>", "description": "Thinking level" },
+        { "flag": "--message <text>", "description": "Initial message" },
+        { "flag": "--timeout-ms <ms>", "description": "Timeout" },
+        { "flag": "--history-limit <n>", "description": "History limit" }
+      ]
+    },
+    {
+      "command": "dashboard",
+      "description": "Open the web dashboard"
+    }
+  ]
+}

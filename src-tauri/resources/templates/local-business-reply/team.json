@@ -1,0 +1,7 @@
+{
+  "id": "local-business-reply",
+  "name": "Local Business Reply",
+  "description": "Handle customer inquiries for local businesses quickly and professionally. Rosie is the friendly 24/7 front desk that never sleeps.",
+  "image": "./image.png",
+  "members": ["rosie"]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "meeting-prep",
+  "name": "Meeting Prep",
+  "description": "Research and prepare briefings before important meetings. Cortana ensures you walk in prepared with comprehensive background and talking points.",
+  "image": "./image.png",
+  "members": ["cortana"]
+}

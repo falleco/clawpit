@@ -1,0 +1,7 @@
+{
+  "id": "zen",
+  "name": "Zen Instance",
+  "description": "Default instance with only one member: Zen",
+  "image": "./image.png",
+  "members": ["zeny"]
+}

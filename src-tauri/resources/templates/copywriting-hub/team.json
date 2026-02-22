@@ -1,0 +1,7 @@
+{
+  "id": "copywriting-hub",
+  "name": "Copywriting Hub",
+  "description": "Create compelling marketing copy, blog posts, and content at scale. Hemingway drafts punchy prose while Lois ensures clarity and conversion potential.",
+  "image": "./image.png",
+  "members": ["hemingway", "lois"]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "travel-check",
+  "name": "Travel Check",
+  "description": "Manage travel arrangements, reminders, and logistics. Amelia monitors flights, tracks reservations, and makes travel less stressful.",
+  "image": "./image.png",
+  "members": ["amelia"]
+}

@@ -1,0 +1,7 @@
+{
+  "id": "data-analysis",
+  "name": "Data Analysis",
+  "description": "Transform raw data into actionable insights and visualizations. Oracle finds patterns while Tufte creates charts and dashboards that tell stories.",
+  "image": "./image.png",
+  "members": ["oracle", "tufte"]
+}
