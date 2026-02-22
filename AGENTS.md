@@ -10,6 +10,12 @@ Clawpit is a Tauri v2 desktop application designed to simplify OpenClaw manageme
 - **Package Manager**: Bun
 - **Target Users**: Non-technical users who need guided setup and management
 
+## Language Policy
+
+- All project-facing content must be written in English, regardless of the chat language.
+- This includes source code comments, documentation, README/changelog entries, commit/release messages, CI logs/messages, user-facing strings, and generated project artifacts.
+- If a request comes in another language, keep communication with the requester in that language if needed, but ensure all changes committed to the project remain in English.
+
 ### Core Dependencies (User's System)
 - **Docker** with Docker Compose v2 plugin
 - **Git** for OpenClaw workspace operations

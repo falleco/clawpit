@@ -21,14 +21,20 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
+import {
+  Navigate,
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from 'react-router-dom';
 import {
   DockerSetupWizard,
   FeatureTour,
   InstanceTerminal,
   TemplateDetail,
-  WSL2SetupWizard,
   WizardContainer,
+  WSL2SetupWizard,
 } from '@/components';
 import { DashboardLayout } from '@/components/dashboard';
 import {
@@ -49,6 +55,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui';
+import { MainWindowLayout } from '@/layouts/main-window-layout';
 import {
   hasSeenFeatureTour,
   markFeatureTourSeen,
@@ -56,7 +63,6 @@ import {
 import { loadRuntimeCapabilities } from '@/lib/runtime-capabilities';
 import { ThemeProvider } from '@/lib/theme';
 import { cn } from '@/lib/utils';
-import { MainWindowLayout } from '@/layouts/main-window-layout';
 import {
   HomeScreen,
   InstallationGuideScreen,

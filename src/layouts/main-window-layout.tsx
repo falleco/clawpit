@@ -52,7 +52,10 @@ export function MainWindowLayout({
 
         <div className="flex min-w-0 flex-1 overflow-hidden">
           <div className="flex min-w-0 flex-1 flex-col">
-            <header data-tauri-drag-region className="h-16 shrink-0 bg-transparent">
+            <header
+              data-tauri-drag-region
+              className="h-16 shrink-0 bg-transparent"
+            >
               <div
                 data-tauri-drag-region
                 className="flex h-full items-center justify-between px-6"

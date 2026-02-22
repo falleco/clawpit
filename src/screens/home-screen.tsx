@@ -1,8 +1,5 @@
 import { Play } from 'lucide-react';
-import {
-  CoreServicesMonitor,
-  StatusOverview,
-} from '@/components/dashboard';
+import { CoreServicesMonitor, StatusOverview } from '@/components/dashboard';
 import {
   Button,
   Card,

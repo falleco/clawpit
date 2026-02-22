@@ -1,10 +1,5 @@
 import { TemplateBrowser } from '@/components';
-import {
-  Card,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui';
+import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui';
 
 interface TemplatesScreenProps {
   clawpitDir: string | null;

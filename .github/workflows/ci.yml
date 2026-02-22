@@ -1,16 +1,27 @@
-name: CI
+name: CI/CD
 
 on:
-  push:
-    branches: [main, master]
   pull_request:
+  push:
+    branches:
+      - main
+      - master
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  verify:
+    name: Verify (checks, tests, build)
+    runs-on: ubuntu-22.04
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
@@ -34,9 +45,195 @@ jobs:
       - name: Install frontend dependencies
         run: bun install --frozen-lockfile
 
-      - name: Rust checks
-        run: cargo check
+      - name: Enforce Conventional Commits
+        shell: bash
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            FROM="${{ github.event.pull_request.base.sha }}"
+            TO="${{ github.event.pull_request.head.sha }}"
+          else
+            FROM="${{ github.event.before }}"
+            TO="${{ github.sha }}"
+          fi
+
+          if [[ -z "$TO" ]]; then
+            TO="${{ github.sha }}"
+          fi
+
+          if [[ -z "$FROM" || "$FROM" == "0000000000000000000000000000000000000000" ]]; then
+            FROM="$(git rev-list --max-parents=0 "$TO" | tail -n 1)"
+          fi
+
+          echo "Checking commit messages in range: $FROM..$TO"
+          bun run commitlint -- --from "$FROM" --to "$TO" --verbose
+
+      - name: TypeScript typecheck
+        run: bun run typecheck
+
+      - name: Lint and formatting checks
+        run: bun run check
+
+      - name: Rust check
         working-directory: src-tauri
+        run: cargo check --locked
+
+      - name: Rust tests
+        working-directory: src-tauri
+        run: cargo test --locked
+
+      - name: Frontend tests (if configured)
+        shell: bash
+        run: |
+          if bun -e "import { readFileSync } from 'node:fs'; const pkg=JSON.parse(readFileSync('package.json','utf8')); process.exit(pkg?.scripts?.test ? 0 : 1)"; then
+            echo "Running frontend tests..."
+            bun run test
+          else
+            echo "No frontend test script found in package.json. Skipping frontend tests."
+          fi
 
       - name: Frontend build
         run: bun run build
+
+      - name: Upload frontend artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-dist-${{ github.sha }}
+          path: dist
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: CI Summary
+        run: |
+          {
+            echo "## CI Summary"
+            echo "- Typecheck, lint/check, Rust checks, Rust tests and frontend build executed."
+            echo "- Frontend bundle uploaded as workflow artifact."
+            echo "- Run details: https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  semantic_release:
+    name: Semantic Release
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master')
+    needs: verify
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+      issues: write
+      pull-requests: write
+    outputs:
+      released: ${{ steps.semantic.outputs.new_release_published }}
+      version: ${{ steps.semantic.outputs.new_release_version }}
+      tag: ${{ steps.semantic.outputs.new_release_git_tag }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run semantic-release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v4
+        with:
+          semantic_version: 24
+          extra_plugins: |
+            @semantic-release/changelog
+            @semantic-release/commit-analyzer
+            @semantic-release/exec
+            @semantic-release/git
+            @semantic-release/github
+            @semantic-release/release-notes-generator
+            conventional-changelog-conventionalcommits
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Release summary
+        shell: bash
+        run: |
+          {
+            echo "## Semantic Release"
+            if [[ "${{ steps.semantic.outputs.new_release_published }}" == "true" ]]; then
+              echo "- New release: \`${{ steps.semantic.outputs.new_release_git_tag }}\`"
+              echo "- Version: \`${{ steps.semantic.outputs.new_release_version }}\`"
+              echo "- Release URL: https://github.com/${{ github.repository }}/releases/tag/${{ steps.semantic.outputs.new_release_git_tag }}"
+            else
+              echo "- No release generated from commits in this push."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  release_binaries:
+    name: Build binaries (${{ matrix.platform }})
+    if: needs.semantic_release.outputs.released == 'true'
+    needs: semantic_release
+    runs-on: ${{ matrix.platform }}
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        platform:
+          - ubuntu-22.04
+          - windows-latest
+          - macos-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Setup Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install Linux dependencies for Tauri
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libwebkit2gtk-4.1-dev \
+            libgtk-3-dev \
+            libayatana-appindicator3-dev \
+            librsvg2-dev \
+            patchelf \
+            pkg-config
+
+      - name: Install frontend dependencies
+        run: bun install --frozen-lockfile
+
+      - name: Build and upload assets to release
+        uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tagName: ${{ needs.semantic_release.outputs.tag }}
+          releaseName: Clawpit ${{ needs.semantic_release.outputs.tag }}
+          releaseDraft: false
+          prerelease: ${{ contains(needs.semantic_release.outputs.tag, '-') }}
+
+      - name: Upload bundles as workflow artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bundles-${{ matrix.platform }}-${{ needs.semantic_release.outputs.tag }}
+          path: src-tauri/target/release/bundle/**
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Binary build summary
+        run: |
+          {
+            echo "## Binary Build"
+            echo "- Platform: \`${{ matrix.platform }}\`"
+            echo "- Release: https://github.com/${{ github.repository }}/releases/tag/${{ needs.semantic_release.outputs.tag }}"
+            echo "- Bundles were uploaded as release assets and workflow artifacts."
+          } >> "$GITHUB_STEP_SUMMARY"
